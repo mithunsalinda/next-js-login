@@ -1,0 +1,11 @@
+{
+    "users": [
+      {
+        "id": "1",
+        "email": "test@visionexdigital.com.au",
+        "password": "password123",
+        "role": "user",
+        "token": "mock-jwt-token-for-admin"
+      }
+    ]
+}

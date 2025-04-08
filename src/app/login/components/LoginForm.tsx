@@ -3,9 +3,35 @@ import React from 'react';
 import { Images } from '../../../assets/Images';
 import Image from 'next/image';
 import { FormButton, TextInput } from '@/components';
+import { useAuthStore } from '@/store';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useRouter } from 'next/navigation';
 export default function LoginForm() {
+  const login = useAuthStore(state => state.login);
+  const router = useRouter();
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email').required('Email is required'),
+      password: Yup.string().required('Password is required'),
+    }),
+    onSubmit: async (values, { setSubmitting, setFieldError }) => {
+      const success = await login(values.email, values.password);
+      setSubmitting(false);
+
+      if (success) {
+        router.push('/dashboard');
+      } else {
+        setFieldError('password', 'Invalid email or password');
+      }
+    },
+  });
   return (
-    <form className="space-y-6">
+    <form className="space-y-6" onSubmit={formik.handleSubmit}>
       <div className="flex items-center gap-2 mb-8">
         <div className=" rounded-md">
           <Image src={Images.logo} alt="Google" width={30} height={30} className="w-8 h-8" />
@@ -23,8 +49,8 @@ export default function LoginForm() {
           placeholder="Enter your email address"
           name="email"
           required
-          //value={email}
-          //onChange={(e) => setEmail(e.target.value)}
+          value={formik.values.email}
+          onChange={formik.handleChange}
         />
       </div>
       <div>
@@ -34,21 +60,25 @@ export default function LoginForm() {
           placeholder="Enter your password"
           name="password"
           required
-          //value={email}
-          //onChange={(e) => setEmail(e.target.value)}
+          value={formik.values.password}
+          onChange={formik.handleChange}
         />
       </div>
+      {formik.touched.password && formik.errors.password && (
+        <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
+      )}
       <FormButton
         type="submit"
         variant="primary"
-        // loading={false}
+        loading={formik.isSubmitting}
+        disabled={formik.isSubmitting}
       >
         Sign In
       </FormButton>
       <FormButton
         type="button"
         variant="secondary"
-        icon={<Image src={Images.googleIcon} alt="Google" width={20} height={20} />}
+        icon={<Image src={Images.googleIcon} alt="Google" width={20} />}
       >
         Sign in with Google
       </FormButton>

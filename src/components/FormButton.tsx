@@ -22,7 +22,7 @@ export default function FormButton({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    'w-full py-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-2';
+    'w-full py-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-2 h-[40px]';
 
   const variants = {
     primary: 'bg-violet-600 text-white hover:bg-violet-700',
