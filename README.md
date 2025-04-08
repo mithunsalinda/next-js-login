@@ -1,6 +1,17 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
+### run the json server
+```bash
+npm run backendup
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
 
 First, run the development server:
 
